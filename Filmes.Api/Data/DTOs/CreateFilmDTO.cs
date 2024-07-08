@@ -1,12 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Filmes.Api.Models;
+namespace Filmes.Api.Data.DTOs;
 
-public class Film
+public class CreateFilmDTO
 {
-    [Key]
-    [Required]
-    public int Id { get; set; }
     [Required(ErrorMessage = "O título do filme é obrigatório")]
     [MaxLength(100, ErrorMessage = "O tamanho do título deve ser menor que 100 caracteres")]
     public string Title { get; set; }
