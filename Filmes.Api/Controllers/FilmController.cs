@@ -20,6 +20,12 @@ public class FilmController : ControllerBase
         _mapper = mapper;
     }
 
+    /// <summary>
+    /// Adiciona filme no banco de dados
+    /// </summary>
+    /// <param name="filmDto">Recebe um valor que deve ser um filmeDTO</param>
+    /// <returns>IActionResult</returns>
+    /// <response code="201">Caso a requisição tenha exito</response>
     [HttpPost]
     public IActionResult AddFilm([FromBody] CreateFilmDTO filmDto)
     {
@@ -29,14 +35,28 @@ public class FilmController : ControllerBase
         return CreatedAtAction(nameof(GetFilmById), new { id = film.Id }, filmDto);
     }
 
+    /// <summary>
+    /// Retorna todos os filmes inseridos em um banco de dados
+    /// </summary>
+    /// <param name="skip">Recebe um valor de início para mostrar o resultado da busca, para mostrar ao usuário os filme a partir do número passado como início da busca</param>
+    /// <param name="take">Recebe um valor para mostrar uma quantidade definida de resultados a partir do que foi passado no valor skip</param>
+    /// <returns>IEnumerable de ReadFilmDTO </returns>
+    /// <response code="200">Caso a requisição tenha exito</response>
     [HttpGet]
     public IEnumerable<ReadFilmDTO> GetFilms(
         [FromQuery] int skip = 0, 
-        [FromQuery] int take = 5)
+        [FromQuery] int take = 25)
     {
         return _mapper.Map<List<ReadFilmDTO>>(_context.Films.Skip(skip).Take(take));
     }
 
+
+    /// <summary>
+    /// Retorna um filme pelo Id dele
+    /// </summary>
+    /// <param name="id">recebe um inteiro com um número de Id</param>
+    /// <returns>IActionResult</returns>
+    /// <response code="201">Caso a requisição tenha êxito</response>
     [HttpGet("{id}")]
     public IActionResult GetFilmById(int id)
     {
@@ -46,6 +66,13 @@ public class FilmController : ControllerBase
         return Ok(filmDto);
     }
 
+    /// <summary>
+    /// Altera os dados de um filme
+    /// </summary>
+    /// <param name="id">recebe um inteiro para identificar o filme</param>
+    /// <param name="filmDto">recebe um filme do tipo UpdateFilmDTO para alteração</param>
+    /// <returns>IActionResult</returns>
+    /// <response code="201">Caso a requisição tenha êxito</response>
     [HttpPut("{id}")]
     public IActionResult UpdateFilm(
         int id,
@@ -58,6 +85,12 @@ public class FilmController : ControllerBase
         return NoContent();
     }
 
+    /// <summary>
+    /// Altera o campo de um filme
+    /// </summary>
+    /// <param name="id">recebe um inteiro para buscar pelo filme no banco de dados</param>
+    /// <returns>IActionResult</returns>
+    /// <response code="201">Caso a requisição tenha êxito</response>
     [HttpPatch("{id}")]
     public IActionResult UpdateFilmField(
         int id,
@@ -73,6 +106,12 @@ public class FilmController : ControllerBase
         return NoContent();
     }
 
+    /// <summary>
+    /// Apaga um filme do banco de dados
+    /// </summary>
+    /// <param name="id">Recebe um inteiro para buscar o filme a ser apagado do banco de dados</param>
+    /// <returns>IActionResult</returns>
+    /// <response code="201">Caso o filme seja apagado do banco</response>
     [HttpDelete("{id}")]
     public IActionResult DeleteFilm(int id)
     {
